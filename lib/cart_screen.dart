@@ -21,8 +21,8 @@ class _CartScreenState extends State<CartScreen> {
 
     return Scaffold(
       appBar: AppBar(
-          leading: BackButton(color: const Color.fromARGB(255, 203, 203, 203)),
-          backgroundColor: Color.fromARGB(255, 35, 34, 34),
+          leading: const BackButton(color: Color.fromARGB(255, 203, 203, 203)),
+          backgroundColor: const Color.fromARGB(255, 35, 34, 34),
           title: const Text(
             "Cart Products",
             style: TextStyle(color: Color.fromARGB(255, 219, 219, 219)),
@@ -118,8 +118,11 @@ class _CartScreenState extends State<CartScreen> {
                                                                   .productPrice
                                                                   .toString()));
                                                         },
-                                                        child:
-                                                            Icon(Icons.delete)),
+                                                        child: const Icon(
+                                                          Icons.delete,
+                                                          color: Color.fromARGB(
+                                                              255, 203, 31, 19),
+                                                        )),
                                                   ],
                                                 ),
                                                 const SizedBox(
@@ -152,16 +155,181 @@ class _CartScreenState extends State<CartScreen> {
                                                                 BorderRadius
                                                                     .circular(
                                                                         10)),
-                                                        child: const Center(
-                                                          child: Text(
-                                                            "Add to cart",
-                                                            style: TextStyle(
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        255,
-                                                                        255,
-                                                                        255)),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(4.0),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceAround,
+                                                            children: [
+                                                              InkWell(
+                                                                onTap: () {
+                                                                  int quantity = snapshot
+                                                                      .data![
+                                                                          index]
+                                                                      .quantity!;
+                                                                  int price = snapshot
+                                                                      .data![
+                                                                          index]
+                                                                      .initialPrice;
+                                                                  quantity--;
+                                                                  int?
+                                                                      newPrice =
+                                                                      price *
+                                                                          quantity;
+
+                                                                  if (quantity >=
+                                                                      1) {
+                                                                    dbHelper!
+                                                                        .updateQauntity(Cart(
+                                                                            id: snapshot
+                                                                                .data![
+                                                                                    index]
+                                                                                .id,
+                                                                            productId: snapshot.data![index].id
+                                                                                .toString(),
+                                                                            productName: snapshot.data![index].productName
+                                                                                .toString(),
+                                                                            initialPrice: snapshot
+                                                                                .data![
+                                                                                    index]
+                                                                                .initialPrice,
+                                                                            productPrice:
+                                                                                newPrice,
+                                                                            quantity:
+                                                                                quantity,
+                                                                            unitTag: snapshot.data![index].unitTag
+                                                                                .toString(),
+                                                                            image: snapshot.data![index].image
+                                                                                .toString()))
+                                                                        .then(
+                                                                            (value) {
+                                                                      newPrice =
+                                                                          0;
+                                                                      quantity =
+                                                                          0;
+                                                                      cart.setTotalPrice(double.parse(snapshot
+                                                                          .data![
+                                                                              index]
+                                                                          .initialPrice!
+                                                                          .toString()));
+                                                                    }).onError((error,
+                                                                            stackTrace) {
+                                                                      print(error
+                                                                          .toString());
+                                                                    });
+                                                                  }
+                                                                },
+                                                                child:
+                                                                    const Icon(
+                                                                  Icons
+                                                                      .remove_circle,
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          241,
+                                                                          241,
+                                                                          241),
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                snapshot
+                                                                    .data![
+                                                                        index]
+                                                                    .quantity
+                                                                    .toString(),
+                                                                style: const TextStyle(
+                                                                    color: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            255,
+                                                                            255,
+                                                                            255),
+                                                                    fontSize:
+                                                                        18),
+                                                              ),
+                                                              InkWell(
+                                                                onTap: () {
+                                                                  int quantity = snapshot
+                                                                      .data![
+                                                                          index]
+                                                                      .quantity!;
+                                                                  int price = snapshot
+                                                                      .data![
+                                                                          index]
+                                                                      .initialPrice;
+                                                                  quantity++;
+                                                                  int?
+                                                                      newPrice =
+                                                                      price *
+                                                                          quantity;
+
+                                                                  dbHelper!
+                                                                      .updateQauntity(Cart(
+                                                                          id: snapshot
+                                                                              .data![
+                                                                                  index]
+                                                                              .id,
+                                                                          productId: snapshot
+                                                                              .data![
+                                                                                  index]
+                                                                              .id
+                                                                              .toString(),
+                                                                          productName: snapshot
+                                                                              .data![
+                                                                                  index]
+                                                                              .productName
+                                                                              .toString(),
+                                                                          initialPrice: snapshot
+                                                                              .data![
+                                                                                  index]
+                                                                              .initialPrice,
+                                                                          productPrice:
+                                                                              newPrice,
+                                                                          quantity:
+                                                                              quantity,
+                                                                          unitTag: snapshot
+                                                                              .data![
+                                                                                  index]
+                                                                              .unitTag
+                                                                              .toString(),
+                                                                          image: snapshot
+                                                                              .data![
+                                                                                  index]
+                                                                              .image
+                                                                              .toString()))
+                                                                      .then(
+                                                                          (value) {
+                                                                    newPrice =
+                                                                        0;
+                                                                    quantity =
+                                                                        0;
+                                                                    cart.addTotalPrice(double.parse(snapshot
+                                                                        .data![
+                                                                            index]
+                                                                        .initialPrice!
+                                                                        .toString()));
+                                                                  }).onError((error,
+                                                                          stackTrace) {
+                                                                    print(error
+                                                                        .toString());
+                                                                  });
+                                                                },
+                                                                child:
+                                                                    const Icon(
+                                                                  Icons
+                                                                      .add_circle,
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          236,
+                                                                          236,
+                                                                          236),
+                                                                ),
+                                                              ),
+                                                            ],
                                                           ),
                                                         )),
                                                   ),
