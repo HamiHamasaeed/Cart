@@ -87,6 +87,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
               ),
             ]),
         body: Column(
+          
           children: [
             Expanded(
               child: ListView.builder(
