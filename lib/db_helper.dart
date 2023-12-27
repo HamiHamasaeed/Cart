@@ -53,4 +53,15 @@ class DBHelper {
     return await dbClient!
         .update('cart', cart.toMap(), where: 'id = ?', whereArgs: [cart.id]);
   }
+
+  Future<bool> checkDataInDatabase(int id) async {
+    // Perform a query to check if the data is available
+    var dbClient = await db;
+    List<Map<String, dynamic>> result = await dbClient!.query(
+      'cart',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    return result.isEmpty;
+  }
 }

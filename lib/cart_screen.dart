@@ -118,7 +118,7 @@ class _CartScreenState extends State<CartScreen> {
                                                       ),
                                                       InkWell(
                                                           onTap: () {
-                                                            dbHelper!.delete(
+                                                            dbHelper.delete(
                                                                 snapshot
                                                                     .data![
                                                                         index]
@@ -186,7 +186,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                     int quantity = snapshot
                                                                         .data![
                                                                             index]
-                                                                        .quantity!;
+                                                                        .quantity;
                                                                     int price = snapshot
                                                                         .data![
                                                                             index]
@@ -199,7 +199,7 @@ class _CartScreenState extends State<CartScreen> {
 
                                                                     if (quantity >=
                                                                         1) {
-                                                                      dbHelper!
+                                                                      dbHelper
                                                                           .updateQauntity(Cart(
                                                                               id: snapshot.data![index].id,
                                                                               productId: snapshot.data![index].id.toString(),
@@ -216,7 +216,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                             0;
                                                                         cart.setTotalPrice(double.parse(snapshot
                                                                             .data![index]
-                                                                            .initialPrice!
+                                                                            .initialPrice
                                                                             .toString()));
                                                                       }).onError((error, stackTrace) {
                                                                         print(error
@@ -256,7 +256,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                     int quantity = snapshot
                                                                         .data![
                                                                             index]
-                                                                        .quantity!;
+                                                                        .quantity;
                                                                     int price = snapshot
                                                                         .data![
                                                                             index]
@@ -267,7 +267,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                         price *
                                                                             quantity;
 
-                                                                    dbHelper!
+                                                                    dbHelper
                                                                         .updateQauntity(Cart(
                                                                             id: snapshot
                                                                                 .data![
@@ -298,7 +298,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                       cart.addTotalPrice(double.parse(snapshot
                                                                           .data![
                                                                               index]
-                                                                          .initialPrice!
+                                                                          .initialPrice
                                                                           .toString()));
                                                                     }).onError((error,
                                                                             stackTrace) {

@@ -87,7 +87,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
               ),
             ]),
         body: Column(
-          
           children: [
             Expanded(
               child: ListView.builder(
@@ -142,44 +141,57 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                         Align(
                                           alignment: Alignment.centerRight,
                                           child: InkWell(
-                                            onTap: () {
-                                              print(index);
-                                              print(index);
-                                              print(productName[index]
-                                                  .toString());
-                                              print(productPrice[index]);
-                                              print(productPrice[index]
-                                                  .toString());
-                                              print('1');
-                                              print(productUnit[index]
-                                                  .toString());
-                                              print(productImage[index]
-                                                  .toString());
-                                              dbHelper!
-                                                  .insert(Cart(
-                                                id: index,
-                                                productId: [index].toString(),
-                                                productName: productName[index]
-                                                    .toString(),
-                                                initialPrice:
-                                                    productPrice[index],
-                                                productPrice:
-                                                    productPrice[index],
-                                                quantity: 1,
-                                                unitTag: productUnit[index]
-                                                    .toString(),
-                                                image: productImage[index]
-                                                    .toString(),
-                                              ))
-                                                  .then((value) {
-                                                print('product added');
-                                                cart.addTotalPrice(double.parse(
-                                                    productPrice[index]
-                                                        .toString()));
-                                                cart.addCounter();
-                                              }).onError((error, stackTrace) {
-                                                print(error.toString());
-                                              });
+                                            onTap: () async {
+                                              // print(index);
+                                              // print(index);
+
+                                              // print(productPrice[index]);
+                                              // print(productPrice[index]
+                                              //     .toString());
+                                              // print('1');
+                                              // print(productUnit[index]
+                                              //     .toString());
+                                              // print(productImage[index]
+                                              //     .toString());
+                                              bool isDataAvailable =
+                                                  await dbHelper!
+                                                      .checkDataInDatabase(
+                                                          index);
+                                              if (isDataAvailable) {
+                                                print(productName[index]
+                                                    .toString());
+                                                dbHelper!
+                                                    .insert(Cart(
+                                                  id: index,
+                                                  productId: [index].toString(),
+                                                  productName:
+                                                      productName[index]
+                                                          .toString(),
+                                                  initialPrice:
+                                                      productPrice[index],
+                                                  productPrice:
+                                                      productPrice[index],
+                                                  quantity: 1,
+                                                  unitTag: productUnit[index]
+                                                      .toString(),
+                                                  image: productImage[index]
+                                                      .toString(),
+                                                ))
+                                                    .then((value) {
+                                                  print('product added');
+                                                  cart.addTotalPrice(
+                                                      double.parse(
+                                                          productPrice[index]
+                                                              .toString()));
+                                                  cart.addCounter();
+                                                }).onError((error, stackTrace) {
+                                                  print(error.toString());
+                                                });
+                                              } else {
+                                                // ignore: use_build_context_synchronously
+                                                showAutomaticSnackbar(context,
+                                                    'Product is already in cart!');
+                                              }
                                             },
                                             child: Container(
                                                 height: 35,
@@ -217,5 +229,14 @@ class _ProductListScreenState extends State<ProductListScreen> {
         ),
       ),
     );
+  }
+
+  void showAutomaticSnackbar(BuildContext context, String message) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      duration: Duration(seconds: 2),
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
