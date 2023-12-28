@@ -13,19 +13,21 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(create: (_) => CartProvider(),
-    child: Builder(builder: (BuildContext context){
-      return MaterialApp(
-      title: 'Codify',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: Colors.black,
-        colorScheme:
-            ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 0, 0, 0)),
-        useMaterial3: true,
-      ),
-      home:  ProductListScreen(),
+    return ChangeNotifierProvider(
+      create: (_) => CartProvider(),
+      child: Builder(builder: (BuildContext context) {
+        return MaterialApp(
+          title: 'Codify',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            primaryColor: Colors.black,
+            colorScheme: ColorScheme.fromSeed(
+                seedColor: const Color.fromARGB(255, 0, 0, 0)),
+            useMaterial3: true,
+          ),
+          home: const ProductListScreen(),
+        );
+      }),
     );
-    }), );
   }
 }
