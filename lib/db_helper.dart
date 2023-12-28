@@ -64,4 +64,13 @@ class DBHelper {
     );
     return result.isEmpty;
   }
+
+  Future<void> clearTable() async {
+    // Delete all rows from the table
+    var dbClient = await db;
+    await dbClient!.delete('cart');
+
+    // Alternatively, you can use raw SQL for the same operation:
+    // await dbClient!.rawDelete('DELETE FROM $cart');
+  }
 }

@@ -15,39 +15,57 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   DBHelper dbHelper = DBHelper();
+  CartProvider myCart = CartProvider();
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<CartProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
-          leading: const BackButton(color: Color.fromARGB(255, 203, 203, 203)),
-          backgroundColor: const Color.fromARGB(255, 35, 34, 34),
-          title: const Text(
-            "Cart Products",
-            style: TextStyle(color: Color.fromARGB(255, 219, 219, 219)),
-          ),
-          centerTitle: true,
-          actions: [
-            Center(
-              child: badges.Badge(
-                badgeContent: Consumer<CartProvider>(
-                  builder: (context, value, child) {
-                    return Text(value.getCounter().toString(),
-                        style: const TextStyle(color: Colors.white));
-                  },
-                ),
-                animationDuration: const Duration(milliseconds: 300),
-                child: const Icon(
-                  Icons.shopping_bag_outlined,
-                  color: Color.fromARGB(255, 219, 219, 219),
-                ),
+        leading: const BackButton(color: Color.fromARGB(255, 203, 203, 203)),
+        backgroundColor: const Color.fromARGB(255, 35, 34, 34),
+        title: const Text(
+          "Cart Products",
+          style: TextStyle(color: Color.fromARGB(255, 219, 219, 219)),
+        ),
+        centerTitle: true,
+        actions: [
+          InkWell(
+            onTap: () {
+              dbHelper.clearTable();
+              myCart.resetCart();
+              showAutomaticSnackbar(context, 'Cart is Empty');
+            },
+            child: const Center(
+              child: Icon(
+                Icons.cleaning_services_outlined,
+                color: Color.fromARGB(255, 239, 96, 0),
               ),
             ),
-            const SizedBox(
-              width: 20.0,
+          ),
+          const SizedBox(
+            width: 20.0,
+          ),
+          Center(
+            child: badges.Badge(
+              badgeContent: Consumer<CartProvider>(
+                builder: (context, value, child) {
+                  return Text(value.getCounter().toString(),
+                      style: const TextStyle(color: Colors.white));
+                },
+              ),
+              animationDuration: const Duration(milliseconds: 300),
+              child: const Icon(
+                Icons.shopping_bag_outlined,
+                color: Color.fromARGB(255, 219, 219, 219),
+              ),
             ),
-          ]),
+          ),
+          const SizedBox(
+            width: 20.0,
+          ),
+        ],
+      ),
       body: Column(
         children: [
           FutureBuilder(
@@ -57,9 +75,14 @@ class _CartScreenState extends State<CartScreen> {
                   if (snapshot.data!.isEmpty) {
                     return const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Image(image: AssetImage('images/empty-cart.png')),
+                        Image(
+                          image: AssetImage('images/empty-cart.png'),
+                          height: 450,
+                          width: 450,
+                          fit: BoxFit.contain,
+                        ),
                       ],
                     );
                   } else {
@@ -380,6 +403,17 @@ class _CartScreenState extends State<CartScreen> {
         ],
       ),
     );
+  }
+
+  void showAutomaticSnackbar(BuildContext context, String message) {
+    final snackBar = SnackBar(
+      content: Text(message.toUpperCase()),
+      duration: Duration(seconds: 1),
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Color.fromARGB(255, 239, 96, 0),
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
 

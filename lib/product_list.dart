@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_build_context_synchronously
 // import 'dart:ffi';
 
 import 'package:badges/badges.dart' as badges;
@@ -11,7 +11,6 @@ import 'package:provider/provider.dart';
 
 class ProductListScreen extends StatefulWidget {
   const ProductListScreen({super.key});
-
   @override
   State<ProductListScreen> createState() => _ProductListScreenState();
 }
@@ -47,7 +46,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
     'https://islproducts.com/wp-content/uploads/round-brushless-dc-motor-sideview.jpg',
     'https://cdn-learn.adafruit.com/guides/images/000/001/436/medium800thumb/halfbb_640px.gif'
   ];
-
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<CartProvider>(context);
@@ -158,6 +156,15 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                       .checkDataInDatabase(
                                                           index);
                                               if (isDataAvailable) {
+                                                mySnackbar(
+                                                    context,
+                                                    '${productName[index]} has been added to your cart!',
+                                                    SnackBarBehavior.floating,
+                                                    Color.fromRGBO(
+                                                        0, 132, 255, 0.973),
+                                                    const Color.fromARGB(
+                                                        255, 207, 207, 207));
+
                                                 print(productName[index]
                                                     .toString());
                                                 dbHelper!
@@ -188,9 +195,14 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                   print(error.toString());
                                                 });
                                               } else {
-                                                // ignore: use_build_context_synchronously
-                                                showAutomaticSnackbar(context,
-                                                    'Product is already in cart!');
+                                                mySnackbar(
+                                                    context,
+                                                    'Product is already in cart!',
+                                                    SnackBarBehavior.fixed,
+                                                    Color.fromRGBO(
+                                                        47, 47, 47, 0.978),
+                                                    const Color.fromARGB(
+                                                        255, 207, 207, 207));
                                               }
                                             },
                                             child: Container(
@@ -231,10 +243,16 @@ class _ProductListScreenState extends State<ProductListScreen> {
     );
   }
 
-  void showAutomaticSnackbar(BuildContext context, String message) {
+  void mySnackbar(BuildContext context, String message,
+      SnackBarBehavior behavior, Color mycolor, Color textColor) {
     final snackBar = SnackBar(
-      content: Text(message),
+      content: Text(
+        message.toUpperCase(),
+        style: TextStyle(color: textColor),
+      ),
       duration: Duration(seconds: 2),
+      behavior: behavior,
+      backgroundColor: mycolor,
     );
 
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
