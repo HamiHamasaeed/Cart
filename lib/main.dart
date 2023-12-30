@@ -16,7 +16,8 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => CartProvider(),
       child: Builder(builder: (BuildContext context) {
-        return MaterialApp(
+        return 
+        MaterialApp(
           title: 'Codify',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
