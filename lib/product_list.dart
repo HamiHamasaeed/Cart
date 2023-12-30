@@ -4,10 +4,10 @@
 import 'package:badges/badges.dart' as badges;
 import 'package:codify100/cart_model.dart';
 import 'package:codify100/cart_provider.dart';
-import 'package:codify100/cart_screen.dart';
 import 'package:codify100/db_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
 
 class ProductListScreen extends StatefulWidget {
   const ProductListScreen({super.key});
@@ -61,8 +61,9 @@ class _ProductListScreenState extends State<ProductListScreen> {
             actions: [
               InkWell(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => CartScreen()));
+                  // Navigator.push(context,
+                  //     MaterialPageRoute(builder: (context) => CartScreen()));
+                  GoRouter.of(context).go('/cart');
                 },
                 child: Center(
                   child: badges.Badge(

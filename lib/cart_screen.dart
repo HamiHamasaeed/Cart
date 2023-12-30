@@ -5,6 +5,7 @@ import 'package:codify100/db_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:go_router/go_router.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -22,7 +23,9 @@ class _CartScreenState extends State<CartScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: const BackButton(color: Color.fromARGB(255, 203, 203, 203)),
+        leading: BackButton(
+            color: const Color.fromARGB(255, 203, 203, 203),
+            onPressed: () => GoRouter.of(context).go('/')),
         backgroundColor: const Color.fromARGB(255, 35, 34, 34),
         title: const Text(
           "Cart Products",
